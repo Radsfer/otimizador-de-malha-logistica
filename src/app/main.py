@@ -31,12 +31,12 @@ st.markdown("""
     .main-header {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #1a1a2e;
+        color: #111827;
         margin-bottom: 0.5rem;
     }
     .sub-header {
         font-size: 1.1rem;
-        color: #4a4a6a;
+        color: #374151;
         margin-bottom: 2rem;
     }
 </style>

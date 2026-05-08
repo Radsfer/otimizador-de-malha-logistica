@@ -83,14 +83,12 @@ class ProblemValidator:
         demanda_total = sum(c.demanda_total() for c in clientes)
 
         cds_disponiveis = set(range(len(cds)))
-        if config.cds_obrigatorios:
-            cds_disponiveis = set(config.cds_obrigatorios)
         if config.max_cds is not None and config.max_cds < len(cds):
             # Ordenar CDs por capacidade decrescente e pegar os top max_cds
             ordenados = sorted(
                 range(len(cds)), key=lambda i: cds[i].capacidade_total, reverse=True
             )
-            cds_disponiveis = cds_disponiveis | set(ordenados[: config.max_cds])
+            cds_disponiveis = set(ordenados[: config.max_cds])
 
         cap_disponivel = sum(cds[i].capacidade_total for i in cds_disponiveis)
         if cap_disponivel < demanda_total:

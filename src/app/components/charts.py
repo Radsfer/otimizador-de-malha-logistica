@@ -16,7 +16,7 @@ def pie_custos(result: SolverOutput) -> go.Figure:
     }
     fig = px.pie(
         df, values="Valor", names="Categoria",
-        hole=0.4, color_discrete_sequence=["#667eea", "#f093fb", "#4facfe"],
+        hole=0.4, color_discrete_sequence=["#2563EB", "#059669", "#D97706"],
     )
     fig.update_traces(textinfo="label+percent", textfont_size=12)
     return fig
@@ -40,7 +40,7 @@ def bar_custo_por_cd(result: SolverOutput) -> go.Figure:
     }
     fig = px.bar(
         df, x="CD", y="Custo Total (R$)",
-        color="Custo Total (R$)", color_continuous_scale="Viridis",
+        color="Custo Total (R$)", color_continuous_scale="Blues",
         text_auto=".2s",
     )
     fig.update_layout(xaxis_tickangle=-45)
@@ -51,9 +51,9 @@ def stacked_comparativo(resultados: list[SolverOutput], nomes: list[str]) -> go.
     """Gráfico de barras empilhadas comparando cenários."""
     fig = go.Figure()
     for label, attr, color in [
-        ("Custo Fixo", "custo_fixo", "#667eea"),
-        ("Transporte", "custo_transporte", "#f093fb"),
-        ("Estoque", "custo_estoque", "#4facfe"),
+        ("Custo Fixo", "custo_fixo", "#2563EB"),
+        ("Transporte", "custo_transporte", "#059669"),
+        ("Estoque", "custo_estoque", "#D97706"),
     ]:
         fig.add_trace(go.Bar(
             name=label,
