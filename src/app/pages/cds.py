@@ -52,5 +52,11 @@ def render(result: SolverOutput) -> None:
                 df, x="Produto", y="Quantidade", color="Quantidade",
                 color_continuous_scale="Blues", text_auto=".2s",
             )
-            fig.update_layout(height=250, xaxis_tickangle=-30)
+            fig.update_layout(
+                height=250, xaxis_tickangle=-30,
+                paper_bgcolor="white", plot_bgcolor="white",
+                font_color="#111827", title_font_color="#111827",
+            )
+            fig.update_xaxes(tickfont_color="#111827", title_font_color="#111827")
+            fig.update_yaxes(tickfont_color="#111827", title_font_color="#111827")
             st.plotly_chart(fig, use_container_width=True)

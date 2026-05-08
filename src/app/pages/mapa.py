@@ -104,9 +104,9 @@ def render(cds: list[CD], clientes: list[Cliente], result: SolverOutput) -> None
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("""
-    <div style="background:#F9FAFB;border-left:4px solid #2563EB;padding:1rem;border-radius:0 8px 8px 0;margin:1rem 0;">
+    <div style="background:#F9FAFB;border-left:4px solid #2563EB;padding:1rem;border-radius:0 8px 8px 0;margin:1rem 0;color:#111827;">
     <b>Como ler este mapa:</b><br>
-    <b>CDs Abertos</b> atendem clientes (linhas vermelhas).<br>
+    <b>CDs Abertos</b> atendem clientes (linhas azuis).<br>
     <b>CDs Fechados</b> representam economia de custo fixo.<br>
     <b>Clientes</b> consomem produtos da rede.
     </div>

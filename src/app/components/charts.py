@@ -19,6 +19,7 @@ def pie_custos(result: SolverOutput) -> go.Figure:
         hole=0.4, color_discrete_sequence=["#2563EB", "#059669", "#D97706"],
     )
     fig.update_traces(textinfo="label+percent", textfont_size=12)
+    _apply_contrast(fig)
     return fig
 
 
@@ -44,6 +45,7 @@ def bar_custo_por_cd(result: SolverOutput) -> go.Figure:
         text_auto=".2s",
     )
     fig.update_layout(xaxis_tickangle=-45)
+    _apply_contrast(fig)
     return fig
 
 
@@ -68,4 +70,18 @@ def stacked_comparativo(resultados: list[SolverOutput], nomes: list[str]) -> go.
         legend_title="Componente",
         height=450,
     )
+    _apply_contrast(fig)
     return fig
+
+
+def _apply_contrast(fig: go.Figure) -> None:
+    """Forca texto escuro em todos os elementos do grafico."""
+    fig.update_layout(
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        font_color="#111827",
+        title_font_color="#111827",
+        legend_font_color="#111827",
+    )
+    fig.update_xaxes(tickfont_color="#111827", title_font_color="#111827")
+    fig.update_yaxes(tickfont_color="#111827", title_font_color="#111827")

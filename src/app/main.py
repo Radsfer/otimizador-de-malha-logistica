@@ -36,8 +36,12 @@ st.markdown("""
     }
     .sub-header {
         font-size: 1.1rem;
-        color: #374151;
+        color: #1F2937;
         margin-bottom: 2rem;
+    }
+    /* forca contraste alto em todo texto do app */
+    body, p, label, .stMarkdown, .stMetric, .stTabs {
+        color: #111827 !important;
     }
 </style>
 """, unsafe_allow_html=True)
