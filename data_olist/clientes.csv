@@ -1,0 +1,31 @@
+id,nome,cidade,lat,lon,demanda_P01,demanda_P02,demanda_P03,demanda_P04,demanda_P05,demanda_P06,demanda_P07,demanda_P08
+CLI_001,Cliente São Paulo 1,São Paulo,-23.5963,-46.6067,338,146,381,209,203,149,72,46
+CLI_002,Cliente Niterói 2,Niterói,-22.8778,-43.0823,267,150,389,194,263,121,93,78
+CLI_003,Cliente Rio de Janeiro 3,Rio de Janeiro,-22.8859,-43.1976,504,270,307,199,502,344,114,90
+CLI_004,Cliente Campinas 4,Campinas,-22.8696,-47.0736,628,167,535,232,471,238,200,101
+CLI_005,Cliente São Paulo 5,São Paulo,-23.5835,-46.5941,655,489,571,470,880,696,155,330
+CLI_006,Cliente São José dos Campos 6,São José dos Campos,-23.26,-45.8951,179,110,152,70,183,79,22,35
+CLI_007,Cliente Rio de Janeiro 7,Rio de Janeiro,-22.8132,-43.1729,397,505,581,332,430,282,192,210
+CLI_008,Cliente Belo Horizonte 8,Belo Horizonte,-19.9293,-43.9862,362,173,435,185,400,309,57,129
+CLI_009,Cliente São Paulo 9,São Paulo,-23.5644,-46.6643,695,409,471,358,964,267,166,244
+CLI_010,Cliente Belo Horizonte 10,Belo Horizonte,-19.9596,-43.9241,185,78,154,72,206,57,28,37
+CLI_011,Cliente São Paulo 11,São Paulo,-23.5325,-46.6067,685,361,443,139,607,276,84,165
+CLI_012,Cliente Florianópolis 12,Florianópolis,-27.6191,-48.4961,141,91,146,123,193,73,22,30
+CLI_013,Cliente São Paulo 13,São Paulo,-23.5458,-46.6729,813,297,514,199,659,523,162,110
+CLI_014,Cliente Brasília 14,Brasília,-15.7278,-47.8635,693,188,525,211,486,297,157,108
+CLI_015,Cliente São Paulo 15,São Paulo,-23.5785,-46.6741,547,405,806,215,739,297,138,64
+CLI_016,Cliente Brasília 16,Brasília,-15.7401,-47.9318,420,373,408,283,272,238,113,147
+CLI_017,Cliente Rio de Janeiro 17,Rio de Janeiro,-22.9174,-43.1721,777,275,516,446,525,364,142,182
+CLI_018,Cliente São Paulo 18,São Paulo,-23.4935,-46.6851,735,476,910,433,960,423,79,161
+CLI_019,Cliente São Paulo 19,São Paulo,-23.5466,-46.6172,682,338,971,370,964,471,156,195
+CLI_020,Cliente São Paulo 20,São Paulo,-23.5188,-46.7338,618,383,770,488,953,371,242,336
+CLI_021,Cliente Salvador 21,Salvador,-12.9566,-38.5071,198,88,160,130,197,135,53,47
+CLI_022,Cliente Porto Alegre 22,Porto Alegre,-30.0245,-51.2141,492,334,657,242,646,184,79,158
+CLI_023,Cliente São Paulo 23,São Paulo,-23.6124,-46.6043,1220,498,1076,534,914,730,146,223
+CLI_024,Cliente Fortaleza 24,Fortaleza,-3.7134,-38.5653,224,333,440,219,367,141,115,144
+CLI_025,Cliente São Paulo 25,São Paulo,-23.5172,-46.7005,506,339,641,228,847,242,114,102
+CLI_026,Cliente Florianópolis 26,Florianópolis,-27.5839,-48.4947,372,150,623,317,389,281,106,104
+CLI_027,Cliente Belo Horizonte 27,Belo Horizonte,-19.8672,-43.9481,497,434,885,225,394,513,204,126
+CLI_028,Cliente Londrina 28,Londrina,-23.3171,-51.1063,188,94,108,59,127,81,30,25
+CLI_029,Cliente São José dos Campos 29,São José dos Campos,-23.2305,-45.8875,128,180,129,91,163,101,65,53
+CLI_030,Cliente Curitiba 30,Curitiba,-25.3576,-49.2819,477,270,593,156,643,219,160,134

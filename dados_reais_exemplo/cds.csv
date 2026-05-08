@@ -1,0 +1,6 @@
+id,nome,cidade,lat,lon,capacidade_total,custo_fixo_mensal,cap_P01,cap_P02,cap_P03,cap_P04,cap_P05
+CD_SP,CD Guarulhos,São Paulo,-23.4623,-46.5346,25000,120000,5000,5000,3000,4000,2000
+CD_RJ,CD Duque de Caxias,Rio de Janeiro,-22.7868,-43.3131,18000,85000,4000,4000,2500,3000,1500
+CD_BH,CD Contagem,Belo Horizonte,-19.9317,-44.0538,15000,70000,3500,3500,2000,2500,1200
+CD_POA,CD Gravataí,Porto Alegre,-29.9423,-51.0223,12000,55000,3000,3000,1500,2000,1000
+CD_SSA,CD Camaçari,Salvador,-12.6972,-38.3332,14000,60000,3200,3200,1800,2200,1100

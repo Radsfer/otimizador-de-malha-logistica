@@ -1,0 +1,6 @@
+id,nome,peso_kg,valor_unitario,prazo_validade_dias,giro_classificacao
+P01,Leite UHT Integral 1L,1.05,5.99,180,A
+P02,Leite UHT Desnatado 1L,1.05,5.49,180,A
+P03,Iogurte Natural 170g,0.18,3.29,35,A
+P04,Refrigerante Cola 2L,2.10,8.99,365,A
+P05,Arroz Tipo 1 5kg,5.00,24.90,730,B
