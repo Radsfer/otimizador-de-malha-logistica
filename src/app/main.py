@@ -25,51 +25,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# CSS customizado minimal
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #111827;
-        margin-bottom: 0.5rem;
-    }
-    .sub-header {
-        font-size: 1.1rem;
-        color: #1F2937;
-        margin-bottom: 2rem;
-    }
-    /* fundo branco no conteudo principal */
-    .stApp {
-        background-color: #FFFFFF;
-    }
-    .main .block-container {
-        background-color: #FFFFFF;
-    }
-    /* texto escuro no conteudo, sem !important para nao quebrar controles */
-    .main h1, .main h2, .main h3, .main h4, .main p,
-    .main .stMarkdown, .stMetric, .stTabs [data-baseweb="tab-list"] {
-        color: #111827;
-    }
-    /* sidebar branca com texto escuro */
-    [data-testid="stSidebar"] {
-        background-color: #FFFFFF;
-    }
-    [data-testid="stSidebar"] .stMarkdown,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stSlider {
-        color: #111827;
-    }
-</style>
-""", unsafe_allow_html=True)
-
 # Header
-st.markdown('<div class="main-header">Otimizador de Malha Logística</div>', unsafe_allow_html=True)
-st.markdown(
-    '<div class="sub-header">'
-    'Ferramenta de otimização de rede de distribuição usando Programação Linear Inteira (MIP)'
-    '</div>',
-    unsafe_allow_html=True,
+st.title("Otimizador de Malha Logística")
+st.subheader(
+    "Ferramenta de otimização de rede de distribuição usando Programação Linear Inteira (MIP)"
 )
 
 # Dados (cacheados)
