@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copia arquivos do projeto
 COPY pyproject.toml .
+COPY README.md .
 COPY src/ ./src/
 COPY data_olist/ ./data_olist/
 
