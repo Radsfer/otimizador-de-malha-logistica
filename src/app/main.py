@@ -39,8 +39,11 @@ st.markdown("""
         color: #1F2937;
         margin-bottom: 2rem;
     }
-    /* forca contraste alto em todo texto do app */
-    body, p, label, .stMarkdown, .stMetric, .stTabs {
+    /* fundo branco e texto escuro em todo o app */
+    body, .stApp, .main, .block-container {
+        background-color: #FFFFFF !important;
+    }
+    body, p, label, .stMarkdown, .stMetric, .stTabs, .stButton, .stSlider {
         color: #111827 !important;
     }
 </style>
