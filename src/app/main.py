@@ -39,12 +39,26 @@ st.markdown("""
         color: #1F2937;
         margin-bottom: 2rem;
     }
-    /* fundo branco e texto escuro em todo o app */
-    body, .stApp, .main, .block-container {
-        background-color: #FFFFFF !important;
+    /* fundo branco no conteudo principal */
+    .stApp {
+        background-color: #FFFFFF;
     }
-    body, p, label, .stMarkdown, .stMetric, .stTabs, .stButton, .stSlider {
-        color: #111827 !important;
+    .main .block-container {
+        background-color: #FFFFFF;
+    }
+    /* texto escuro no conteudo, sem !important para nao quebrar controles */
+    .main h1, .main h2, .main h3, .main h4, .main p,
+    .main .stMarkdown, .stMetric, .stTabs [data-baseweb="tab-list"] {
+        color: #111827;
+    }
+    /* sidebar branca com texto escuro */
+    [data-testid="stSidebar"] {
+        background-color: #FFFFFF;
+    }
+    [data-testid="stSidebar"] .stMarkdown,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stSlider {
+        color: #111827;
     }
 </style>
 """, unsafe_allow_html=True)
