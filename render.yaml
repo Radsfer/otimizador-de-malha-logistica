@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: otimizador-malha-logistica
+    runtime: docker
+    repo: https://github.com/Radsfer/otimizador-de-malha-logistica
+    branch: main
+    plan: free
+    envVars:
+      - key: PYTHONPATH
+        value: /app/src
+    healthCheckPath: /_stcore/health
