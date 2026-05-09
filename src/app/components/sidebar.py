@@ -6,17 +6,21 @@ import streamlit as st
 
 from otimizador.domain.schemas import ScenarioConfig
 
-CDS_NOMES = [
-    "São Paulo", "Rio de Janeiro", "Belo Horizonte", "Campinas",
-    "Curitiba", "Porto Alegre", "Brasília", "Salvador",
-    "Fortaleza", "Recife", "Manaus", "Goiânia",
-]
-
-
-def render_sidebar(total_cds: int) -> tuple[ScenarioConfig, bool]:
-    """Renderiza a sidebar e retorna (config, rodar_otimizacao)."""
+def render_sidebar(cd_nomes: list[str]) -> tuple[ScenarioConfig, bool, str]:
+    """Renderiza a sidebar e retorna (config, rodar_otimizacao, fonte_dados)."""
+    total_cds = len(cd_nomes)
     with st.sidebar:
         st.markdown("### Configuracoes do Cenario")
+        st.markdown("---")
+
+        fonte_dados = st.radio(
+            "Fonte de dados",
+            ["Sintético (lácteos)", "Olist (e-commerce)"],
+            help="Escolha o dataset para análise",
+        )
+        if fonte_dados == "Olist (e-commerce)":
+            st.caption("Sellers como CDs, customers como mercados de demanda.")
+
         st.markdown("---")
 
         max_cds = st.slider(
@@ -32,8 +36,9 @@ def render_sidebar(total_cds: int) -> tuple[ScenarioConfig, bool]:
         st.markdown("*Marque CDs que devem permanecer abertos por critério estratégico*")
 
         obrigatorios = []
-        for i, nome in enumerate(CDS_NOMES[:total_cds]):
-            if st.checkbox(nome, key=f"cd_{i}", value=(nome == "São Paulo")):
+        for i, nome in enumerate(cd_nomes):
+            default = nome == "São Paulo" or "São Paulo" in nome
+            if st.checkbox(nome, key=f"cd_{i}", value=default):
                 obrigatorios.append(i)
 
         st.markdown("---")
@@ -54,7 +59,6 @@ def render_sidebar(total_cds: int) -> tuple[ScenarioConfig, bool]:
                 if key.startswith("cd_"):
                     continue
                 del st.session_state[key]
-            st.session_state["rodar_otimizacao"] = False
             st.rerun()
 
     config = ScenarioConfig(
@@ -62,4 +66,4 @@ def render_sidebar(total_cds: int) -> tuple[ScenarioConfig, bool]:
         cds_obrigatorios=obrigatorios if obrigatorios else None,
         max_cds=max_cds if max_cds < total_cds else None,
     )
-    return config, rodar
+    return config, rodar, fonte_dados

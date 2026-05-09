@@ -63,9 +63,9 @@ def render(cds: list[CD], clientes: list[Cliente], result: SolverOutput) -> None
         hover_name="nome",
         hover_data=["cidade"],
         color_discrete_map={
-            "CD Aberto": "#2563EB",
-            "CD Fechado": "#9CA3AF",
-            "Cliente": "#059669",
+            "CD Aberto": "#16a34a",
+            "CD Fechado": "#dc2626",
+            "Cliente": "#2563eb",
         },
         zoom=3,
         height=600,
@@ -94,18 +94,19 @@ def render(cds: list[CD], clientes: list[Cliente], result: SolverOutput) -> None
                 mode="lines",
                 lon=[cd_info.lon, cinfo["lon"]],
                 lat=[cd_info.lat, cinfo["lat"]],
-                line=dict(width=0.5, color="#93C5FD"),
+                line=dict(width=0.5, color="#93c5fd"),
                 hoverinfo="skip",
                 showlegend=False,
                 opacity=0.3,
+                name="Rota",
             ))
 
     fig.update_layout(mapbox_style="carto-positron")
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("""
-    <div style="background:#F9FAFB;border-left:4px solid #2563EB;padding:1rem;border-radius:0 8px 8px 0;margin:1rem 0;color:#111827;">
-    <b>Como ler este mapa:</b><br>
+    <div style="border-left:3px solid #2563eb;padding:0.75rem;margin:1rem 0;color:#1f2937;">
+    <b style="color:#111827;">Como ler este mapa:</b><br>
     <b>CDs Abertos</b> atendem clientes (linhas azuis).<br>
     <b>CDs Fechados</b> representam economia de custo fixo.<br>
     <b>Clientes</b> consomem produtos da rede.

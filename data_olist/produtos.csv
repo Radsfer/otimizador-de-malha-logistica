@@ -1,9 +1,9 @@
 id,nome,peso_kg,valor_unitario,prazo_validade_dias,giro_classificacao
-P01,Eletronicos,1.61,228.57,365,A
-P02,Moveis Decoracao,7.39,196.17,730,B
-P03,Beleza Saude,0.96,40.17,1095,A
-P04,Esporte Lazer,2.08,108.51,730,B
-P05,Utilidades Domesticas,2.83,58.56,1095,A
-P06,Brinquedos,1.24,82.8,730,B
-P07,Ferramentas,3.37,152.96,1095,C
-P08,Papelaria,0.4,24.74,730,C
+P01,Eletronicos,1.66,245.42,365,A
+P02,Moveis Decoracao,9.15,190.66,730,B
+P03,Beleza Saude,0.67,51.42,1095,A
+P04,Esporte Lazer,2.76,130.3,730,B
+P05,Utilidades Domesticas,2.55,64.03,1095,A
+P06,Brinquedos,1.14,90.24,730,B
+P07,Ferramentas,4.23,164.52,1095,C
+P08,Papelaria,0.49,22.95,730,C

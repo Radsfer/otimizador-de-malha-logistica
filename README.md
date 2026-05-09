@@ -79,7 +79,7 @@ otimizador-malha-logistica/
 ├── pyproject.toml
 ├── README.md
 ├── .env.example                 # Template de credenciais Kaggle
-├── data_olist/                  # Dataset sintetico exemplo (12 CDs, 30 clientes, 8 produtos)
+├── data_olist/                  # Dataset no padrao Olist (15 CDs, 40 clientes, 8 produtos)
 ├── data_kaggle/                 # Dataset real do Olist (gerado via Kaggle API)
 ├── scripts/
 │   ├── fetch_olist_real.py      # Baixa e processa dataset real do Olist via Kaggle
@@ -192,7 +192,7 @@ P01,Eletronicos,1.5,250.0,365,A
 #### Gerar dataset sintetico (padrao Olist)
 
 ```bash
-python scripts/prepare_olist_dataset.py --sellers 12 --customers 30 --output-dir data_olist
+python scripts/prepare_olist_dataset.py --sellers 15 --customers 40 --output-dir data_olist
 ```
 
 #### Baixar dataset real do Olist (via Kaggle)
@@ -246,53 +246,115 @@ Cobertura:
 
 ## Insights dos Resultados
 
-### Dataset sintetico (12 CDs, 30 clientes, 8 produtos)
+### Dataset Olist (e-commerce brasileiro)
 
-Rodando com `data_olist`, o solver encontra a solucao otima em ~950ms:
-
-```
-Status:        OPTIMO
-CDs abertos:   6 / 12
-Custo total:   R$ 362.123,79
-  → Fixo:      R$ 313.910,00  (86,7%)
-  → Transporte: R$ 28.154,24  (7,8%)
-  → Estoque:    R$ 20.059,55  (5,5%)
-```
-
-**Observacoes:**
-- O custo fixo domina o total (86,7%). Reduzir CDs abertos de 12 para 6 gera economia significativa.
-- Transporte e estoque sao relativamente pequenos porque a rede e densa: com 6 CDs bem posicionados (SP, RJ, BH, Curitiba, Brasilia), a distancia media ate os clientes permanece baixa.
-- Todos os CDs abertos operam em alta utilizacao (99-100%), indicando que o modelo esta distribuindo a demanda de forma eficiente entre os ativos selecionados.
-
-### Dataset real do Olist (15 CDs, 30 clientes, 8 produtos)
-
-Processando os dados brutos do Olist (~100k pedidos, 3.095 sellers, 99k customers), o solver encontra:
+Gerado a partir do padrao estatistico do dataset [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce): 15 sellers como CDs candidatos, 40 customers como mercados de demanda e 8 categorias de produto.
 
 ```
 Status:        OPTIMO
-CDs abertos:   3 / 15
-Custo total:   R$ 99.255,69
-  → Fixo:      R$ 80.830,00  (81,4%)
-  → Transporte: R$ 12.644,77  (12,7%)
-  → Estoque:    R$ 5.780,91   (5,8%)
+Tempo:         13,5s
+CDs abertos:   10 / 15
+Demanda:       91.862 un
+
+Custo total:   R$ 478.247
+  → Fixo:       R$ 401.645  (84,0%)
+  → Transporte: R$  50.625  (10,6%)
+  → Estoque:    R$  25.976  ( 5,4%)
 ```
 
+**CDs selecionados (10 abertos):**
+- Sudeste (8): São Paulo, Rio de Janeiro x2, Santos x2, Campinas x2, Belo Horizonte, São José dos Campos
+- Sul (2): Porto Alegre, Florianópolis
+
+**CDs fechados (5):** Rio de Janeiro 1, Porto Alegre 2, Porto Alegre 4, São Paulo 12, Santos 13
+
 **Observacoes:**
-- O modelo fecha 12 dos 15 CDs candidatos, mantendo apenas Sao Paulo, Guarulhos e Pedreira (interior de SP).
-- A concentracao em Sao Paulo faz sentido logistico: o estado concentra ~60% dos sellers e ~35% dos customers do dataset Olist.
-- O CD de Pedreira opera em apenas 49,4% de utilizacao, sugerindo que ele e marginalmente util (provavelmente atendendo cidades do interior paulista).
-- O trade-off e claro: abrir mais CDs reduziria transporte, mas o custo fixo de cada CD novo (~R$ 17-40k) nao compensa a economia de frete em uma rede com demanda tao concentrada no eixo SP-RJ-MG.
+- O **custo fixo domina** (84%). Fechar 5 dos 15 CDs gera economia significativa sem degradar o atendimento.
+- A rede otimizada concentra operacao no **eixo Sudeste-Sul**, que concentra a maior parte da demanda do e-commerce brasileiro.
+- **Utilizacao alta**: 9 dos 10 CDs operam em 100% de capacidade; apenas Porto Alegre 7 opera em 82%, sugerindo que e marginalmente util para atender o Sul.
+- **Transporte controlado**: apesar de fechar 1/3 dos CDs, o custo de transporte representa apenas 10,6% do total, indicando que os CDs remanescentes estao bem posicionados geograficamente.
+- Categorias de maior volume: **Beleza & Saude** e **Utilidades Domesticas** lideram as alocacoes.
 
 ### Comparativo: livre vs. todos abertos
 
-| Cenario | CDs Abertos | Custo Total | Economia vs. Todos |
-|---------|-------------|-------------|-------------------|
-| Livre (Olist sintetico) | 6 | R$ 362k | - |
-| Todos abertos | 12 | R$ 454k | R$ 92k (20% mais barato com metade dos CDs) |
-| Livre (Olist real) | 3 | R$ 99k | - |
-| Todos abertos (real) | 15 | ~R$ 180k | ~45% mais barato com 20% dos CDs |
+| Cenario | CDs Abertos | Custo Total | Custo Fixo | Transporte | Estoque |
+|---------|-------------|-------------|------------|------------|---------|
+| Otimizacao livre | 10 | R$ 478.247 | R$ 401.645 | R$ 50.625 | R$ 25.976 |
+| Todos abertos | 15 | ~R$ 650k* | ~R$ 550k | ~R$ 55k | ~R$ 45k |
 
-**Conclusao**: em redes de e-commerce brasileiras, o custo fixo de manutencao de CDs e o driver principal. O modelo MIP captura isso explicitamente e consegue reduzir a rede para o minimo viavel sem degradar o atendimento.
+*Estimativa linear: custo fixo proporcional + transporte e estoque com distribuicao mais fragmentada.
+
+**Economia projetada**: ~R$ 170k (26% mais barato fechando 5 CDs).
+
+**Conclusao**: em redes de e-commerce brasileiras, o custo fixo de manutencao de CDs e o driver principal de custo. O modelo MIP captura o trade-off explicitamente: abrir mais CDs reduz distancia media ate o cliente, mas o custo fixo (~R$ 30-46k/CD) rapidamente domina. A solucao otima mantem apenas os CDs estrategicamente posicionados para cobrir as regioes de maior demanda com alta utilizacao.
+
+---
+
+## Desafios de Implementacao
+
+### 1. Dados Sinteticos como Prova de Conceito
+
+O desenvolvimento comecou com dados sinteticos de **lacteos** (12 CDs, 25 clientes, 8 produtos). A escolha foi deliberada: o dominio de *fast-moving consumer goods* (FMCG) e intuitivo (todo mundo entende leite e iogurte), e a estrutura de demanda e previsivel.
+
+**Desafios encontrados:**
+- **Validacao do modelo**: sem dados reais, como saber se o solver esta de fato otimizando? A solucao foi criar *invariantes* matematicas (demanda atendida = demanda requisitada, custo total = soma dos componentes) e testes automatizados que as verificam.
+- **Big-M global**: a primeira versao usava uma constante arbitraria (`M = 1_000_000`) para as restricoes logicas de estoque. Isso enfraquecia o relaxamento linear e o solver demorava eternidade. O ajuste foi calcular `M_ik = sum(d_jk)` por produto — *big-M apertado*.
+- **Coordenadas geograficas**: dados sinteticos compartilham lat/lon identicos para CD e cliente na mesma cidade. O custo de transporte caia para zero, gerando solucoes triviais. Foi adicionado um custo fixo de manuseio por unidade para evitar frete zero.
+
+### 2. Migracao para Dados Reais (Olist)
+
+A transicao do sintetico para o dataset [Olist Brazilian E-Commerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) expôs gargalos que nao aparecem em dados controlados.
+
+**Desafios encontrados:**
+- **Formato heterogeneo**: os CSVs do Olist usam nomes de cidade no padrao `cidade_estado` (ex: `sao_paulo_sp`). O geocoding precisou de normalizacao para extrair lat/lon consistentes.
+- **Escala**: ~100k pedidos, 3.095 sellers, 99k customers. Nao da para passar isso direto pro solver (o MIP exploriaria em variaveis). A solucao foi **agregar por cidade**: sellers da mesma cidade viram um CD candidato, customers da mesma cidade viram um cliente unico com demanda agregada.
+- **Categorias para SKUs**: o Olist tem ~70 categorias de produto. Para o solver, isso e inviavel. Foi criado um mapeamento para 8 macro-categorias (`eletronicos`, `beleza_saude`, `moveis_decoracao`, etc.) com pesos e valores medios por categoria.
+- **Capacidade desconhecida**: o dataset Olist nao informa capacidade de armazenagem dos sellers. Foi necessario inferir a partir do volume historico de vendas com um fator de seguranca.
+- **Custo fixo inexistente**: sellers do marketplace nao tem "custo fixo de CD" documentado. Foi modelado como proporcional a capacidade (`custo_fixo = capacidade * R$ 3.5-5.5/un`), calibrado para gerar ordens de magnitude realistas.
+
+### 3. Integracao do Solver no Dashboard
+
+Conectar o backend MIP ao frontend Streamlit trouxe desafios de *state management*.
+
+**Desafios encontrados:**
+- **Session state**: o Streamlit reexecuta o script inteiro a cada interacao. O solver nao pode rodar a cada clique de checkbox. A solucao foi usar `st.session_state` para guardar o resultado e `st.cache_data` para os dados, invalidando o cache apenas quando a fonte de dados muda.
+- **Cache por fonte**: como o dashboard permite trocar entre "Sintetico" e "Olist", o cache precisa ser separado por dataset. A funcao `_carregar_dados(fonte)` usa o parametro `fonte` como chave de cache.
+- **Tempo de resposta**: o solver Olist leva ~13s. Sem um indicador visual, o usuario acha que travou. Foi adicionado `st.spinner("Otimizando rede...")` durante a execucao.
+- **Legenda `undefined` no Plotly**: ao migrar de `plotly.express` para `plotly.graph_objects`, o titulo do layout ficava como `None`, renderizando "undefined" no frontend. A solucao foi explicitar `title_text=""` em todos os graficos.
+
+### 4. Adaptacao para API Externa (Roadmap)
+
+O projeto foi estruturado desde o inicio com contratos tipados (`SolverInput`, `SolverOutput` via Pydantic) justamente para facilitar essa evolucao.
+
+**Como adaptar:**
+```python
+# FastAPI wrapper (exemplo)
+from fastapi import FastAPI
+from otimizador.domain.schemas import SolverInput, SolverOutput
+from otimizador.solver import LogisticsSolver
+
+app = FastAPI()
+solver = LogisticsSolver()
+
+@app.post("/otimizar", response_model=SolverOutput)
+def otimizar(inp: SolverInput):
+    return solver.solve(inp)
+```
+
+**Desafios esperados:**
+- **Timeout HTTP**: a otimizacao leva 10-60s. APIs REST tipicas tem timeout de 30s. A solucao e usar **jobs assincronos** (Celery, RQ, ou AWS Lambda com callback) — o cliente recebe um `job_id` e consulta o status.
+- **Escalabilidade**: com 100+ CDs e 1000+ clientes, o MIP pode levar minutos. O OR-Tools suporta paralelizacao (`num_search_workers`), mas para instancias muito grandes talvez seja necessario migrar para solvers comerciais (Gurobi, CPLEX) ou usar heuristica (ALNS, Simulated Annealing).
+- **Dados em tempo real**: integrar com ERP/TMS exige polling periodico ou webhooks. O pipeline ideal e: ERP emite evento de fechamento mensal → Lambda aciona o solver → resultado e persistido em DW → dashboard le do DW.
+- **Autenticacao**: em producao, `SolverInput` precisaria de validacao de quota (limite de variaveis por tenant) e rate limiting.
+
+**Evolucao da arquitetura:**
+```
+[v1] CLI local com dados sinteticos
+[v2] CSV + DataLoader (dados Olist)
+[v3] Dashboard Streamlit com seletor de fonte
+[v4] API REST + job queue (Celery + Redis)
+[v5] Multi-tenant SaaS com auth e quotas
+```
 
 ---
 

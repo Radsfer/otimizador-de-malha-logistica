@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import pandas as pd
-import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
 from otimizador.domain.schemas import SolverOutput
@@ -48,12 +48,21 @@ def render(result: SolverOutput) -> None:
                 {"Produto": p, "Quantidade": q}
                 for p, q in sorted(prod_qtd.items(), key=lambda x: -x[1])
             ])
-            fig = px.bar(
-                df, x="Produto", y="Quantidade", color="Quantidade",
-                color_continuous_scale="Blues", text_auto=".2s",
+            fig = go.Figure(
+                data=[
+                    go.Bar(
+                        x=df["Produto"],
+                        y=df["Quantidade"],
+                        marker_color="#2563eb",
+                        text=[f"{v:,.0f}" for v in df["Quantidade"]],
+                        textposition="outside",
+                        name="Quantidade",
+                        hovertemplate="%{x}<br>%{y:,.0f} un<extra>Quantidade</extra>",
+                    )
+                ]
             )
             fig.update_layout(
-                height=250, xaxis_tickangle=-30,
+                height=250, xaxis_tickangle=-30, title_text="",
                 paper_bgcolor="white", plot_bgcolor="white",
                 font_color="#111827", title_font_color="#111827",
             )

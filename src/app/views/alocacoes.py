@@ -9,6 +9,10 @@ from otimizador.domain.schemas import SolverOutput
 
 
 def render(result: SolverOutput) -> None:
+    st.markdown(
+        "<style>.stMultiSelect [data-baseweb='tag'] { background-color: #1e40af !important; }</style>",
+        unsafe_allow_html=True,
+    )
     st.markdown("### Alocações Otimizadas (CD → Cliente → Produto)")
 
     if not result.alocacoes:

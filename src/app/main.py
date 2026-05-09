@@ -13,10 +13,24 @@ import streamlit as st  # noqa: E402
 
 from app.components.metrics import render_metrics  # noqa: E402
 from app.components.sidebar import render_sidebar  # noqa: E402
-from app.pages import alocacoes, cds, custos, mapa, modelo  # noqa: E402
+from app.views import alocacoes, cds, custos, mapa, modelo  # noqa: E402
 from otimizador.data.generator import gerar_dados_sinteticos  # noqa: E402
+from otimizador.data.loader import DataLoader  # noqa: E402
 from otimizador.domain.schemas import SolverInput  # noqa: E402
 from otimizador.solver import LogisticsSolver  # noqa: E402
+
+DATA_DIR = PROJECT_ROOT.parent / "data_olist"
+
+
+@st.cache_data
+def _carregar_dados(fonte: str):
+    if fonte == "Olist (e-commerce)":
+        return DataLoader.from_csvs(
+            DATA_DIR / "cds.csv",
+            DATA_DIR / "clientes.csv",
+            DATA_DIR / "produtos.csv",
+        )
+    return gerar_dados_sinteticos(seed=42)
 
 st.set_page_config(
     page_title="Otimizador de Malha Logística",
@@ -25,21 +39,38 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.markdown(
+    """
+    <style>
+    [data-testid="stSidebar"] { min-width: 260px !important; max-width: 300px !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Header
 st.title("Otimizador de Malha Logística")
 st.subheader(
     "Ferramenta de otimização de rede de distribuição usando Programação Linear Inteira (MIP)"
 )
 
-# Dados (cacheados)
-@st.cache_data
-def _carregar_dados():
-    return gerar_dados_sinteticos(seed=42)
+if "fonte_dados" not in st.session_state:
+    st.session_state["fonte_dados"] = "Sintético (lácteos)"
 
-cds_data, clientes_data, produtos_data = _carregar_dados()
+cds_data, clientes_data, produtos_data = _carregar_dados(st.session_state["fonte_dados"])
 
 # Sidebar
-config, rodar = render_sidebar(total_cds=len(cds_data))
+config, rodar, fonte_dados = render_sidebar(cd_nomes=[cd.nome for cd in cds_data])
+
+# Se mudou a fonte, limpa resultado e recarrega
+if fonte_dados != st.session_state.get("fonte_dados"):
+    st.session_state["fonte_dados"] = fonte_dados
+    for key in ["resultado", "otimizador"]:
+        st.session_state.pop(key, None)
+    st.rerun()
+
+# Recarrega se a fonte mudou e deu rerun acima — se não, já tá carregado
+cds_data, clientes_data, produtos_data = _carregar_dados(st.session_state["fonte_dados"])
 
 # Estado inicial
 if "resultado" not in st.session_state:
@@ -61,6 +92,10 @@ if rodar:
         )
         st.session_state["resultado"] = solver.solve(inp)
         st.session_state["otimizador"] = solver
+
+# Título contextual
+if fonte_dados == "Olist (e-commerce)":
+    st.info(f"Dataset Olist: {len(cds_data)} sellers como CDs, {len(clientes_data)} customers, {len(produtos_data)} categorias de produto.")
 
 result = st.session_state["resultado"]
 
